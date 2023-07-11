@@ -23,6 +23,7 @@ To configure the script, follow these steps:
    - `REPLACE_WITH_PORT`: Replace with the port number for your PostgreSQL server.
 
 2. Set up the Database:
+   
 Table name: `local_vrm_data` or change this in ... def write_postgress(items): ... cur.execute ...
 
 | Column   | Type                | Description                            |
