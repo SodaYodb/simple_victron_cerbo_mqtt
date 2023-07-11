@@ -1,4 +1,4 @@
-# Victron Data Logger
+# Victron Cerbo GX MQTT Data Logger
 
 This repository contains a Python script that logs data from Victron devices using MQTT and stores it in a PostgreSQL database. It retrieves data such as solar power, grid power, battery information, and more.
 
