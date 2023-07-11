@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 
 
 vrm_address = "REPLACE_WITH_VICTRON_DEVICE_IP"
+
 pghost = "REPLACE_WITH_PG_HOST"
 pgdbname = "REPLACE_WITH_DB_NAME"
 pguser = "REPLACE_WITH_USERNAME"
@@ -68,27 +69,29 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     excluded_keys = ["instance", "name", "id", "state", "active_battery_service"]
-    json_payload = json.loads(msg.payload.decode('utf-8'))
-    value_id = ""
-    if json_payload["value"] != None:
-        if str(msg.topic) == f'N/{victron_id}/system/0/Dc/Pv/Power':
-            value_id = "Solar"
-        elif str(msg.topic) == f'N/{victron_id}/grid/31/Ac/L1/Power':
-            value_id = "L1"
-        elif str(msg.topic) == f'N/{victron_id}/grid/31/Ac/L2/Power':
-            value_id = "L2"
-        elif str(msg.topic) == f'N/{victron_id}/grid/31/Ac/L3/Power':
-            value_id = "L3"
-        elif str(msg.topic) == f'N/{victron_id}/vebus/276/Ac/Out/L1/V':
-            value_id = "L1_Volt"
-        elif str(msg.topic) == f'N/{victron_id}/system/0/Batteries':
-            for key , value in json_payload["value"][0].items():
-                if key not in excluded_keys:
-                    b_value_id = "b_" + str(key)
-                    add_to_buffer(b_value_id, value)
-        if value_id:
-            add_to_buffer(value_id, json_payload["value"])
-
+    try:
+        json_payload = json.loads(msg.payload.decode('utf-8'))
+        value_id = ""
+        if json_payload["value"] != None:
+            if str(msg.topic) == f'N/{victron_id}/system/0/Dc/Pv/Power':
+                value_id = "Solar"
+            elif str(msg.topic) == f'N/{victron_id}/grid/31/Ac/L1/Power':
+                value_id = "L1"
+            elif str(msg.topic) == f'N/{victron_id}/grid/31/Ac/L2/Power':
+                value_id = "L2"
+            elif str(msg.topic) == f'N/{victron_id}/grid/31/Ac/L3/Power':
+                value_id = "L3"
+            elif str(msg.topic) == f'N/{victron_id}/vebus/276/Ac/Out/L1/V':
+                value_id = "L1_Volt"
+            elif str(msg.topic) == f'N/{victron_id}/system/0/Batteries':
+                for key , value in json_payload["value"][0].items():
+                    if key not in excluded_keys:
+                        b_value_id = "b_" + str(key)
+                        add_to_buffer(b_value_id, value)
+            if value_id:
+                add_to_buffer(value_id, json_payload["value"])
+    except json.JSONDecodeError:
+            print(f"failed decode msg: {msg.payload}")
 
 def add_to_buffer(value_id, value):
     if value_id not in buffered_values:
