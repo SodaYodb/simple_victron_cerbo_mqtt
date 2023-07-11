@@ -102,7 +102,7 @@ def add_to_buffer(value_id, value):
 def process_buffer():
     for value_id, values in buffered_values.items():
         if values:
-            write_time = datetime.now() + timedelta(hours=2)
+            write_time = datetime.now()
             mean_value = sum(values) / len(values)
             write_postgress([write_time, value_id, mean_value])
             buffered_values[value_id] = []
