@@ -115,6 +115,12 @@ def on_disconnect(client, userdata, rc):
         client.reconnect()
 
 
+def keep_alive():
+    #print("keep alive", datetime.now.strftime("%H:%M:%S"))
+    work_client.publish(f'R/{victron_id}/keepalive', '')
+    threading.Timer(keep_alive_duration, keep_alive).start()
+
+
 work_client = mqtt.Client()
 work_client.on_connect = on_connect
 work_client.on_message = on_message
@@ -123,4 +129,5 @@ work_client.on_disconnect = on_disconnect
 work_client.connect(vrm_address, 1883, 60)
 
 process_buffer()
+keep_alive()
 work_client.loop_forever()
