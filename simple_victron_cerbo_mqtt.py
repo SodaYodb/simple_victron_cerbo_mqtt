@@ -49,7 +49,7 @@ def write_postgress(items):
     )
     pgconncet.autocommit = True
     cur = pgconncet.cursor()
-    cur.execute("INSERT INTO local_vrm_data (d_time, value_id, value) VALUES (%s, %s, %s)", (items[0], items[1], items[2]))
+    cur.execute("INSERT INTO local_vrm_data (d_time, value_id, value_cont) VALUES (%s, %s, %s)", (items[0], items[1], items[2]))
     cur.close()
     pgconncet.close()
 
