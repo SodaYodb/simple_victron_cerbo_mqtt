@@ -30,7 +30,7 @@ Table name: `local_vrm_data` or change this in ... def write_postgress(items): .
 | -------- | ------------------- | -------------------------------------- |
 | d_time   | Timestamp without TZ| Timestamp of the logged data            |
 | value_id | Char varying        | Identifier for the logged value         |
-| value    | Numeric (7,2)       | The value of the logged data            |
+| value_cont | Numeric (7,2)       | The value of the logged data            |
 
 
 Feel free to contribute and make improvements! If you encounter any issues or have any questions, please create an issue in the repository.
