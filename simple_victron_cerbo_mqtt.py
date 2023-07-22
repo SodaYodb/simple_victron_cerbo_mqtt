@@ -105,7 +105,7 @@ def process_buffer():
             write_time = datetime.now()
             mean_value = sum(values) / len(values)
             write_postgress([write_time, value_id, mean_value])
-            buffered_values[value_id] = []
+    buffered_values = {}
     threading.Timer(write_duration, process_buffer).start()
 
 
